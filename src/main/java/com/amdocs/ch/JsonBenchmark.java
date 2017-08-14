@@ -28,13 +28,15 @@ package com.amdocs.ch;
 import com.amdocs.ch.events.NotificationEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsoniter.JsonIterator;
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.annotations.Threads;
+import org.openjdk.jmh.annotations.*;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
+@Measurement(iterations = 10, time = 3)
+@Warmup(iterations = 5, time = 1)
+@Timeout(time = 10, timeUnit = TimeUnit.MINUTES)
+@Threads(16)
 public class JsonBenchmark {
 
 	@State(Scope.Benchmark)
@@ -46,14 +48,12 @@ public class JsonBenchmark {
 	}
 
 	@Benchmark
-	@Threads(10)
 	public NotificationEvent jsoniterTest(MyState state) {
 		// place your benchmarked code here
 		return JsonIterator.deserialize(state.message, NotificationEvent.class);
 	}
 
 	@Benchmark
-	@Threads(10)
 	public NotificationEvent jacksonTest(MyState state) throws IOException {
 		// place your benchmarked code here
 		return state.jsonObjectMapper.readValue(state.message, NotificationEvent.class);
