@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 @Measurement(iterations = 10, time = 3)
 @Warmup(iterations = 5, time = 1)
 @Timeout(time = 10, timeUnit = TimeUnit.MINUTES)
-@Fork(value = 2, jvmArgs = "-XX:+AggressiveOpts -Xms2G -Xmx2G")
+@Fork(2)
 @Threads(16)
 public class JsonBenchmark {
 
